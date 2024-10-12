@@ -1,7 +1,7 @@
 class RecipesController < ApplicationController
 
   def index
-    @recipes = Recipe.all
+    @recipes = Recipe.where(user_id: current_user.id)
     render :index
   end
 
@@ -15,7 +15,7 @@ class RecipesController < ApplicationController
       title: params[:title],
       ingredients: params[:ingredients],
       directions: params[:directions],
-      user_id: params[:user_id]
+      user_id: current_user.id
     )
     if @recipe.save!
       render :show
@@ -32,7 +32,7 @@ class RecipesController < ApplicationController
     title: params[:title] || @recipe.title,
     ingredients: params[:ingredients] || @recipe.ingredients,
     directions: params[:directions] || @recipe.directions,
-    user_id: params[:user_id] || @recipe.user_id
+    user_id: current_user.id || @recipe.user_id
     )
     @recipe.save!
     render :show
